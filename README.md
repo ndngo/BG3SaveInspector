@@ -11,6 +11,8 @@ A Windows desktop tool for inspecting Baldur's Gate 3 save files without launchi
 2. Open 'BG3SaveInspector.sln' in Visual Studio 2022
 3. Build and run
 
+![preview of BG3 Save Inspector](res/bg3saveinspector.png)
+
 ## Acknowledgements
 - [LSLib](https://github.com/Norbyte/lslib) by [Norbyte](https://github.com/Norbyte) — 
   used for parsing BG3 save files (.lsv) and LSF binary formats. 
