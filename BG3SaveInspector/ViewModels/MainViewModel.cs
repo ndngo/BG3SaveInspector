@@ -21,6 +21,7 @@ namespace BG3SaveInspector.ViewModels
             QuestDetail = new QuestDetailViewModel();
 
             SaveFile.SaveLoaded += resource => QuestList.Populate(resource);
+            QuestList.QuestSelected += quest => QuestDetail.ShowQuest(quest);
         }
 
     }

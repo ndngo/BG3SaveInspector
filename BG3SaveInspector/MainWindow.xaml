@@ -23,14 +23,14 @@
 
         <!-- Header spans full width -->
         <Border Grid.Row="0" Grid.ColumnSpan="2" Background="#111111" Padding="16">
-            <StackPanel Orientation="Horizontal">
+            <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <Image Width="80" Height="80" Source="{Binding SaveFile.Thumbnail}"/>
                 <StackPanel Margin="16 0 0 0" VerticalAlignment="Center">
                     <TextBlock Text="{Binding SaveFile.SaveName}" Foreground="White" FontSize="18"/>
                     <TextBlock Text="{Binding SaveFile.Playtime}" Foreground="#aaaaaa" FontSize="13"/>
                 </StackPanel>
                 <Button Content="Load Save" Margin="16 0 0 0" VerticalAlignment="Center"
-                        Command="{Binding SaveFile.LoadCommand}"/>
+                Command="{Binding SaveFile.LoadCommand}"/>
             </StackPanel>
         </Border>
 
@@ -45,7 +45,7 @@
                      Background="#2a2a2a" Foreground="White"
                      BorderBrush="#444"/>
             <ListBox Grid.Row="1" 
-                     ItemsSource="{Binding QuestList.Quests}"
+                     ItemsSource="{Binding QuestList.QuestsView}"
                      SelectedItem="{Binding QuestList.SelectedQuest}"
                      Background="Transparent" BorderThickness="0">
                 <ListBox.ItemTemplate>
@@ -63,7 +63,7 @@
 
         <!-- Quest detail -->
         <Grid Grid.Row="1" Grid.Column="1" Background="#252525" >
-            <StackPanel Margin="24" Visibility="{Binding QuestDetail.HasSelection}">
+            <StackPanel Margin="24" Visibility="{Binding QuestDetail.HasSelection, Converter={StaticResource BoolToVis}}">
                 <TextBlock Text="{Binding QuestDetail.ObjectiveId}" 
                            Foreground="White" FontSize="20"/>
                 <TextBlock Text="{Binding QuestDetail.StepId}" 

@@ -6,21 +6,66 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Navigation;
 using LSLib.LS;
+using System.ComponentModel;
+using System.Windows.Data;
 
 namespace BG3SaveInspector.ViewModels
 {
     public class QuestListViewModel : BaseViewModel
     {
-        public ObservableCollection<QuestItemViewModel> Quests { get; } = new();
+        private ObservableCollection<QuestItemViewModel> _quests { get; } = new();
+        public ICollectionView QuestsView { get; }
         private QuestItemViewModel _selectedQuest;
-        public QuestItemViewModel SelectedQuest { get => _selectedQuest; set { _selectedQuest = value; OnPropertyChanged(); } }
-
         private string _searchText;
-        public string SearchText { get => _searchText; set { _searchText = value; OnPropertyChanged(); } }
+
+        public QuestListViewModel()
+        {
+            QuestsView = CollectionViewSource.GetDefaultView(_quests);
+            QuestsView.Filter = FilterQuest;
+        }
+
+        private bool FilterQuest(object obj)
+        {
+            if (string.IsNullOrEmpty(SearchText))
+            {
+                return true;
+            }
+
+            var quest = (QuestItemViewModel)obj;
+            return quest.ObjectiveId.Contains(SearchText, StringComparison.OrdinalIgnoreCase);
+        }
+
+        public QuestItemViewModel SelectedQuest
+        {
+            get => _selectedQuest;
+            set
+            {
+                _selectedQuest = value;
+                OnPropertyChanged();
+                if (value != null)
+                {
+                    QuestSelected?.Invoke(value);
+                }
+            }
+        }
+
+        public string SearchText
+        {
+            get => _searchText;
+            set
+            {
+                _searchText = value;
+                OnPropertyChanged();
+                QuestsView.Refresh();
+            }
+        }
+
+        public event Action<QuestItemViewModel>? QuestSelected;
+
 
         public void Populate(Resource resource)
         {
-            Quests.Clear();
+            _quests.Clear();
 
             System.Diagnostics.Debug.WriteLine("---POPULATE()---");
 
@@ -59,7 +104,7 @@ namespace BG3SaveInspector.ViewModels
                     ? objectiveId.Split('_')[0]
                     : "OTHER";
 
-                Quests.Add(new QuestItemViewModel
+                _quests.Add(new QuestItemViewModel
                 {
                     ObjectiveId = objectiveId,
                     StepId = stepId,
