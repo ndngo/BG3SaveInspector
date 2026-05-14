@@ -83,9 +83,7 @@ namespace BG3SaveInspector.ViewModels
 
                 var root = saveInfo.RootElement;
                 var characters = root.GetProperty("Active Party").GetProperty("Characters");
-                var mc = Enumerable.Range(0, characters.GetArrayLength())
-                    .Select(i => characters[i])
-                    .First(c => c.GetProperty("Origin").GetString() == leaderName);
+                var mc = characters.EnumerateArray().First(c => c.GetProperty("Origin").GetString() == leaderName);
 
                 // MC class string
                 var classes = mc.GetProperty("Classes");
