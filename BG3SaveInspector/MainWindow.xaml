@@ -29,7 +29,7 @@
                     <TextBlock Text="{Binding SaveFile.SaveName}" Foreground="White" FontSize="18"/>
                     <TextBlock Text="{Binding SaveFile.Playtime}" Foreground="#aaaaaa" FontSize="13"/>
                     <TextBlock Text="{Binding SaveFile.LeaderName}" Foreground="White" FontSize="18"/>
-                    <TextBlock Text="{Binding SaveFile.LeaderClass}" Foreground="#aaaaaa" FontSize="13"/>
+                    <TextBlock Text="{Binding SaveFile.Location}" Foreground="#aaaaaa" FontSize="13"/>
                     <TextBlock Text="{Binding SaveFile.Difficulty}" Foreground="#c8a96e" FontSize="12"/>
                 </StackPanel>
                 <Button Content="Load Save" Margin="16 0 0 0" VerticalAlignment="Center"

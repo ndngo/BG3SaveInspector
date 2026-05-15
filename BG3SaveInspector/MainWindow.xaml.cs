@@ -41,6 +41,8 @@ namespace BG3SaveInspector
                 System.Diagnostics.Debug.WriteLine(globalRegion.Key);
             }
 
+
+
             Region osirisVarHelper = globalResource.Regions["OsirisVariableHelper"];
             List<Node> variableManager = osirisVarHelper.Children["VariableManager"];
             List<Node> flagMap = variableManager[0].Children["FlagMap"];
