@@ -11,16 +11,23 @@ namespace BG3SaveInspector.ViewModels
 {
     public class MainViewModel : BaseViewModel
     {
+        private string _statusText = "No save loaded";
         public SaveFileViewModel SaveFile { get; } = new();
         public QuestListViewModel QuestList { get; } = new();
         public QuestDetailViewModel QuestDetail { get; } = new();
+        public string StatusText { get => _statusText; set { _statusText = value; OnPropertyChanged(); } }
         public MainViewModel()
         {
             SaveFile = new SaveFileViewModel();
             QuestList = new QuestListViewModel();
             QuestDetail = new QuestDetailViewModel();
 
-            SaveFile.SaveLoaded += resource => QuestList.Populate(resource);
+            SaveFile.SaveLoaded += resource =>
+            {
+                QuestList.Populate(resource);
+                StatusText =$"Loaded {QuestList.QuestCount} "+ $"{(QuestList.QuestCount > 1 ? "quests" : "quest")}";
+            };
+
             QuestList.QuestSelected += quest => QuestDetail.ShowQuest(quest);
         }
 

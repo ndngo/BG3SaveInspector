@@ -17,6 +17,7 @@ namespace BG3SaveInspector.ViewModels
         public ICollectionView QuestsView { get; }
         private QuestItemViewModel _selectedQuest;
         private string _searchText;
+        public int QuestCount => _quests.Count;
 
         public QuestListViewModel()
         {

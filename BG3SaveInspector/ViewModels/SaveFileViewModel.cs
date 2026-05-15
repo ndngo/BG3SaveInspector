@@ -15,6 +15,7 @@ using LSLib.LS;
 using SkiaSharp;
 using SkiaSharp.Views.WPF;
 using System.Collections.ObjectModel;
+using System.Text.Json;
 
 namespace BG3SaveInspector.ViewModels
 {
@@ -114,8 +115,47 @@ namespace BG3SaveInspector.ViewModels
                 var clientDatas = metaResource.Regions["MetaData"].Children["MetaData"][0].Children["ClientDatas"][0].Children["ClientData"];
 
                 var root = saveInfo.RootElement;
-                /*var characters = root.GetProperty("Active Party").GetProperty("Characters");
-                var mc = characters.EnumerateArray().First(c => c.GetProperty("Origin").GetString() == leaderName);
+                var characters = root.GetProperty("Active Party").GetProperty("Characters");
+
+                Party.Clear();
+
+                foreach (var character in characters.EnumerateArray())
+                {
+                    //JsonElement originProp, raceProp, levelProp, classes;
+
+                    if (!character.TryGetProperty("Origin", out var origin) ||
+                        !character.TryGetProperty("Race", out var race) ||
+                        !character.TryGetProperty("Level", out var level) ||
+                        !character.TryGetProperty("Classes", out var classes)
+                        )
+                    {
+                        continue;
+                    }
+
+                    // skip characters with no classes
+                    if (classes.GetArrayLength() == 0)
+                    {
+                        continue;
+                    }
+
+                    var classString = string.Join(" / ",
+                        classes.EnumerateArray()
+                            .Select(c => $"{c.GetProperty("Sub").GetString()} {c.GetProperty("Main").GetString()}")
+                            .Select(s => s.Trim())
+                    );
+
+                    string originStr = origin.GetString();
+
+                    Party.Add(new PartyMemberViewModel
+                    { 
+                        Name = originStr == "Generic" || originStr == "DarkUrge" ? LeaderName : originStr,
+                        Race = race.GetString(),
+                        Level = level.GetInt32(),
+                        ClassString = classString
+                    });
+                }
+
+                /*var mc = characters.EnumerateArray().First(c => c.GetProperty("Origin").GetString() == leaderName);
 
                 // MC class string
                 var classes = mc.GetProperty("Classes");
@@ -128,7 +168,6 @@ namespace BG3SaveInspector.ViewModels
                 var difficulty = root.GetProperty("Difficulty")[0].GetString();
                 var isHonourMode = (root.GetProperty("Difficulty")[1].GetString() == "RulesetHonour");
                 LeaderName = metaResource.Regions["MetaData"].Children["MetaData"][0].Attributes["LeaderName"].Value.ToString();
-                //LeaderClass = $"Lv.{level} {classString}";
                 Difficulty = (isHonourMode) ? "Honour Mode" : difficulty.Replace("Difficulty", "");
                 Location = root.GetProperty("Current Level").GetString();
                 SaveName = root.GetProperty("Save Name").GetString();
