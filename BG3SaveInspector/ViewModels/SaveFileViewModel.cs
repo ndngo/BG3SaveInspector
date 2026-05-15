@@ -146,7 +146,7 @@ namespace BG3SaveInspector.ViewModels
 
                     Party.Add(new PartyMemberViewModel
                     { 
-                        Name = originStr == "Generic" || originStr == "DarkUrge" ? LeaderName : originStr,
+                        Name = originStr == "Generic" ? "Tav" : originStr,
                         Race = race.GetString(),
                         Level = level.GetInt32(),
                         ClassString = classString
