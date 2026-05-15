@@ -68,8 +68,6 @@ namespace BG3SaveInspector.ViewModels
         {
             _quests.Clear();
 
-            System.Diagnostics.Debug.WriteLine("---POPULATE()---");
-
             if (!resource.Regions.ContainsKey("Journal"))
             {
                 return;
@@ -96,6 +94,7 @@ namespace BG3SaveInspector.ViewModels
                 var objectiveId = attributes["ObjectiveID"].Value.ToString();
                 var stepId = attributes["UnlockedByStepID"].Value.ToString();
                 var isUnlocked = (bool)attributes["QuestUnlocked"].Value;
+
                 var isDisabled = (bool)attributes["QuestDisabled"].Value;
 
                 // get quest flags

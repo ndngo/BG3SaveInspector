@@ -25,7 +25,7 @@ namespace BG3SaveInspector.ViewModels
             ObjectiveId = quest.ObjectiveId;
             StepId = quest.StepId;
             Status = quest.Status;
-            HasSelection = _hasSelection;
+            HasSelection = true;
         }
     }
 }

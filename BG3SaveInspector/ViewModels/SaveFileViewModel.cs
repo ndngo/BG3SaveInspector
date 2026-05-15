@@ -121,8 +121,6 @@ namespace BG3SaveInspector.ViewModels
 
                 foreach (var character in characters.EnumerateArray())
                 {
-                    //JsonElement originProp, raceProp, levelProp, classes;
-
                     if (!character.TryGetProperty("Origin", out var origin) ||
                         !character.TryGetProperty("Race", out var race) ||
                         !character.TryGetProperty("Level", out var level) ||
@@ -154,17 +152,6 @@ namespace BG3SaveInspector.ViewModels
                         ClassString = classString
                     });
                 }
-
-                /*var mc = characters.EnumerateArray().First(c => c.GetProperty("Origin").GetString() == leaderName);
-
-                // MC class string
-                var classes = mc.GetProperty("Classes");
-                var classString = string.Join(" / ",
-                    Enumerable.Range(0, classes.GetArrayLength())
-                        .Select(i => $"{classes[i].GetProperty("Sub").GetString()} {classes[i].GetProperty("Main").GetString()}")
-                );*/
-
-                //var level = mc.GetProperty("Level").GetInt32();
                 var difficulty = root.GetProperty("Difficulty")[0].GetString();
                 var isHonourMode = (root.GetProperty("Difficulty")[1].GetString() == "RulesetHonour");
                 LeaderName = metaResource.Regions["MetaData"].Children["MetaData"][0].Attributes["LeaderName"].Value.ToString();
