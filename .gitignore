@@ -20,3 +20,4 @@ packages/
 
 # BG3 save files
 *.lsv
+**/publish/

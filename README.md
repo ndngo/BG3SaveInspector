@@ -17,6 +17,10 @@ A Windows desktop tool for inspecting Baldur's Gate 3 save files without launchi
 - .NET 8.0
 - Baldur's Gate 3
 
+## Download
+[Download latest release (Windows x64)](https://github.com/ndngo/BG3SaveInspector/releases/latest)
+or build from source, see below
+
 ## Building
 1. Clone the repo
 2. Open 'BG3SaveInspector.sln' in Visual Studio 2022
