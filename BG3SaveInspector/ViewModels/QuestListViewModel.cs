@@ -15,11 +15,12 @@ namespace BG3SaveInspector.ViewModels
     public class QuestListViewModel : BaseViewModel
     {
         private ObservableCollection<QuestItemViewModel> _quests { get; } = new();
-        public ICollectionView QuestsView { get; }
+        
         private QuestItemViewModel _selectedQuest;
         private string _searchText;
+        public ICollectionView QuestsView { get; }
         public int QuestCount => _quests.Count;
-
+        
         public QuestListViewModel()
         {
             QuestsView = CollectionViewSource.GetDefaultView(_quests);

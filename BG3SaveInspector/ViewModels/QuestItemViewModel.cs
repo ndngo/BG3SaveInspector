@@ -20,12 +20,22 @@ namespace BG3SaveInspector.ViewModels
             .Replace("_SUB_", " - ")
             .Replace("_", " ");
         public string Status => IsDisabled ? "Completed" : IsUnlocked ? "Active" : "Locked";
-        public DiffStatus DiffStatus { get; set; } = DiffStatus.Unchanged;
+        private DiffStatus _diffStatus = DiffStatus.Unchanged;
+        public DiffStatus DiffStatus
+        {
+            get => _diffStatus;
+            set
+            {
+                _diffStatus = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(DiffColour));
+            }
+        }
         public System.Windows.Media.Brush DiffColour => DiffStatus switch
         {
             DiffStatus.Added => System.Windows.Media.Brushes.Green,
             DiffStatus.Removed => System.Windows.Media.Brushes.Red,
-            DiffStatus.Modified => System.Windows.Media.Brushes.Yellow,
+            DiffStatus.Modified => System.Windows.Media.Brushes.DarkOrange,
             _ => System.Windows.Media.Brushes.Transparent
         };
     }

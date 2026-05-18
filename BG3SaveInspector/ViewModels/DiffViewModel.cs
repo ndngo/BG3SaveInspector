@@ -1,18 +1,20 @@
-﻿using System;
+﻿using BG3SaveInspector.Commands;
+using BG3SaveInspector.Models;
+using BG3SaveInspector.Services;
+using LSLib.LS;
+using Microsoft.Win32;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Data;
 using System.Windows.Input;
-using BG3SaveInspector.Commands;
-using BG3SaveInspector.Models;
-using LSLib.LS;
-using Microsoft.Win32;
-using BG3SaveInspector.Services;
 
 namespace BG3SaveInspector.ViewModels
 {
@@ -21,10 +23,36 @@ namespace BG3SaveInspector.ViewModels
         private string _saveAName;
         private string _saveBName;
         private string _diffSummary;
+        private string _searchTextA;
+        private string _searchTextB;
 
         public string SaveAName { get => _saveAName; set { _saveAName = value;  OnPropertyChanged(); } }
         public string SaveBName { get => _saveBName; set { _saveBName = value; OnPropertyChanged(); } }
         public string DiffSummary { get => _diffSummary; set { _diffSummary = value; OnPropertyChanged(); } }
+        public string SearchTextA
+        {
+            get => _searchTextA;
+            set
+            {
+                _searchTextA = value;
+                OnPropertyChanged();
+                SaveAQuestsView.Refresh();
+            }
+        }
+
+        public string SearchTextB
+        {
+            get => _searchTextB;
+            set
+            {
+                _searchTextB = value;
+                OnPropertyChanged();
+                SaveBQuestsView.Refresh();
+            }
+        }
+
+        public ICollectionView SaveAQuestsView { get; }
+        public ICollectionView SaveBQuestsView { get; }
         public ObservableCollection<QuestItemViewModel> SaveAQuests { get; } = new();
         public ObservableCollection<QuestItemViewModel> SaveBQuests { get; } = new();
         public ICommand LoadSaveACommand { get; }
@@ -34,6 +62,24 @@ namespace BG3SaveInspector.ViewModels
         {
             LoadSaveACommand = new RelayCommand(() => LoadSave(isSaveA: true));
             LoadSaveBCommand = new RelayCommand(() => LoadSave(isSaveA: false));
+
+            SaveAQuestsView = CollectionViewSource.GetDefaultView(SaveAQuests);
+            SaveBQuestsView = CollectionViewSource.GetDefaultView(SaveBQuests);
+
+            SaveAQuestsView.Filter = obj => FilterQuest(obj, SearchTextA);
+            SaveBQuestsView.Filter = obj => FilterQuest(obj, SearchTextB);
+            
+        }
+
+        private bool FilterQuest(object obj, string searchText)
+        {
+            if (string.IsNullOrEmpty(searchText))
+            {
+                return true;
+            }
+
+            var quest = (QuestItemViewModel)obj;
+            return quest.ObjectiveId.Contains(searchText, StringComparison.OrdinalIgnoreCase);
         }
 
         private void LoadSave(bool isSaveA)
