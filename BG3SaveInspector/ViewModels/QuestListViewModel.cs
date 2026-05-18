@@ -8,6 +8,7 @@ using System.Windows.Navigation;
 using LSLib.LS;
 using System.ComponentModel;
 using System.Windows.Data;
+using BG3SaveInspector.Services;
 
 namespace BG3SaveInspector.ViewModels
 {
@@ -67,54 +68,13 @@ namespace BG3SaveInspector.ViewModels
         public void Populate(Resource resource)
         {
             _quests.Clear();
+            var quests = SaveFileParser.ParseQuestsFromResource(resource);
 
-            if (!resource.Regions.ContainsKey("Journal"))
+            foreach (var q in quests)
             {
-                return;
-            }
-            
-            var journal = resource.Regions["Journal"];
-            
-            if (!journal.Children.ContainsKey("Quests"))
-            {
-                return;
-            }
-
-            var questsNode = journal.Children["Quests"].First();
-
-            System.Diagnostics.Debug.WriteLine($"Reading in quests...");
-            var progressNodes = journal.Children["Quests"][0].Children["Quests"][0].Children["QuestsProgress"];
-            NodeSerializationSettings SerializationSettings = new();
-
-            foreach (var node in progressNodes)
-            {
-                var questStatus = node.Children["MapValue"][0].Children["Quest"][0];
-                var attributes = questStatus.Attributes;
-
-                var objectiveId = attributes["ObjectiveID"].Value.ToString();
-                var stepId = attributes["UnlockedByStepID"].Value.ToString();
-                var isUnlocked = (bool)attributes["QuestUnlocked"].Value;
-
-                var isDisabled = (bool)attributes["QuestDisabled"].Value;
-
-                // get quest flags
-
-                // flag category
-                var prefix = objectiveId.Contains("_")
-                    ? objectiveId.Split('_')[0]
-                    : "OTHER";
-
-                _quests.Add(new QuestItemViewModel
-                {
-                    ObjectiveId = objectiveId,
-                    StepId = stepId,
-                    IsUnlocked = isUnlocked,
-                    IsDisabled = isDisabled,
-                    Prefix= prefix
-                });
-
-                System.Diagnostics.Debug.WriteLine($"NODE: {node.Name}\nobjective: {objectiveId}\nstepID: {stepId}\nunlocked?: {isUnlocked}\ndisabled?: {isDisabled}");
+                _quests.Add(q);
             }
         }
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using BG3SaveInspector.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,5 +20,13 @@ namespace BG3SaveInspector.ViewModels
             .Replace("_SUB_", " - ")
             .Replace("_", " ");
         public string Status => IsDisabled ? "Completed" : IsUnlocked ? "Active" : "Locked";
+        public DiffStatus DiffStatus { get; set; } = DiffStatus.Unchanged;
+        public System.Windows.Media.Brush DiffColour => DiffStatus switch
+        {
+            DiffStatus.Added => System.Windows.Media.Brushes.Green,
+            DiffStatus.Removed => System.Windows.Media.Brushes.Red,
+            DiffStatus.Modified => System.Windows.Media.Brushes.Yellow,
+            _ => System.Windows.Media.Brushes.Transparent
+        };
     }
 }

@@ -6,6 +6,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel;
 using LSLib.LS;
+using System.Windows.Input;
+using BG3SaveInspector.Commands;
 
 namespace BG3SaveInspector.ViewModels
 {
@@ -16,6 +18,23 @@ namespace BG3SaveInspector.ViewModels
         public QuestListViewModel QuestList { get; } = new();
         public QuestDetailViewModel QuestDetail { get; } = new();
         public string StatusText { get => _statusText; set { _statusText = value; OnPropertyChanged(); } }
+
+        public DiffViewModel Diff { get; } = new();
+        // Toggle
+        public bool IsDiffMode
+        {
+            get => _isDiffMode;
+            set
+            {
+                _isDiffMode = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(DiffToggleLabel));
+            }
+        }
+        private bool _isDiffMode;
+        public string DiffToggleLabel => IsDiffMode ? "Exit Compare" : "Compare Saves";
+        public ICommand ToggleDiffModeCommand { get; }
+
         public MainViewModel()
         {
             SaveFile = new SaveFileViewModel();
@@ -29,6 +48,7 @@ namespace BG3SaveInspector.ViewModels
             };
 
             QuestList.QuestSelected += quest => QuestDetail.ShowQuest(quest);
+            ToggleDiffModeCommand = new RelayCommand(() => IsDiffMode = !IsDiffMode);
         }
 
     }

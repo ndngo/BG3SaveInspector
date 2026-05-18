@@ -15,14 +15,16 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="300"/>
             <!-- Quest list -->
-            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="300"/>
             <!-- Quest detail -->
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="300"/>
         </Grid.ColumnDefinitions>
 
         <!-- Header spans full width -->
-        <Border Grid.Row="0" Grid.ColumnSpan="2" Background="#111111" Padding="16">
+        <Border Grid.Row="0" Grid.ColumnSpan="4" Background="#111111" Padding="16">
             <StackPanel Orientation="Horizontal" VerticalAlignment="Center">
                 <Image Width="80" Height="80" Source="{Binding SaveFile.Thumbnail}"/>
                 <StackPanel Margin="16 0 0 0" VerticalAlignment="Center">
@@ -34,23 +36,28 @@
                 </StackPanel>
                 <Button Content="Load Save" Margin="16 0 0 0" VerticalAlignment="Center"
                 Command="{Binding SaveFile.LoadCommand}"/>
+                <Button Content="{Binding DiffToggleLabel}"
+                        Command="{Binding ToggleDiffModeCommand}"
+                        Margin="16 0 0 0"
+                        VerticalAlignment="Center"/>
             </StackPanel>
         </Border>
 
+        <!-- Visibility="{Binding IsDiffMode, Converter={StaticResource InverseBoolToVis}}" Grid.Column="0"-->
         <!-- Quest list -->
-        <Grid Grid.Row="1" Grid.Column="0" Background="#1e1e1e">
+        <Grid Grid.Row="1" Background="#1e1e1e">
             <Grid.RowDefinitions>
                 <RowDefinition Height="40"/>
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <TextBox Grid.Row="0" Margin="8" 
-                     Text="{Binding QuestList.SearchText, UpdateSourceTrigger=PropertyChanged}"
-                     Background="#2a2a2a" Foreground="White"
-                     BorderBrush="#444"/>
+                    Text="{Binding QuestList.SearchText, UpdateSourceTrigger=PropertyChanged}"
+                    Background="#2a2a2a" Foreground="White"
+                    BorderBrush="#444"/>
             <ListBox Grid.Row="1" 
-                     ItemsSource="{Binding QuestList.QuestsView}"
-                     SelectedItem="{Binding QuestList.SelectedQuest}"
-                     Background="Transparent" BorderThickness="0">
+                    ItemsSource="{Binding QuestList.QuestsView}"
+                    SelectedItem="{Binding QuestList.SelectedQuest}"
+                    Background="Transparent" BorderThickness="0">
                 <ListBox.ItemTemplate>
                     <DataTemplate>
                         <Border Padding="4">
@@ -65,26 +72,26 @@
         </Grid>
 
         <!-- Quest detail -->
-        <TabControl Grid.Row="1" Grid.Column="1" Background="#252525" BorderThickness="0">
-
+        <!--Visibility="{Binding IsDiffMode, Converter={StaticResource InverseBoolToVis}}"-->
+        <TabControl Grid.Row="1" Grid.Column="1" Background="#252525" BorderThickness="0" >
             <!-- Quest Detail Tab -->
             <TabItem Header="Quest">
                 <StackPanel Margin="24" 
-                    Visibility="{Binding QuestDetail.HasSelection, 
-                    Converter={StaticResource BoolToVis}}">
+                Visibility="{Binding QuestDetail.HasSelection, 
+                Converter={StaticResource BoolToVis}}">
                     <TextBlock Text="{Binding QuestDetail.ObjectiveId}" 
-                       Foreground="White" FontSize="20"/>
+                    Foreground="White" FontSize="20"/>
                     <TextBlock Text="{Binding QuestDetail.StepId}" 
-                       Foreground="#aaaaaa" FontSize="14" Margin="0 8 0 0"/>
+                    Foreground="#aaaaaa" FontSize="14" Margin="0 8 0 0"/>
                     <TextBlock Text="{Binding QuestDetail.Status}" 
-                       Foreground="#c8a96e" FontSize="13" Margin="0 8 0 0"/>
+                    Foreground="#c8a96e" FontSize="13" Margin="0 8 0 0"/>
                 </StackPanel>
             </TabItem>
 
             <!-- Party Tab -->
             <TabItem Header="Party">
                 <ListBox ItemsSource="{Binding SaveFile.Party}"
-                 Background="Transparent" BorderThickness="0">
+                Background="Transparent" BorderThickness="0">
                     <ListBox.ItemTemplate>
                         <DataTemplate>
                             <Border Padding="4">
@@ -97,9 +104,102 @@
                     </ListBox.ItemTemplate>
                 </ListBox>
             </TabItem>
+        </TabControl>
+        
+        <!-- Quest detail B-->
+        <!--Visibility="{Binding IsDiffMode, Converter={StaticResource InverseBoolToVis}}"-->
+        <TabControl Grid.Row="1" Grid.Column="2" Background="#252525" BorderThickness="0" Visibility="{Binding IsDiffMode, Converter={StaticResource BoolToVis}}">
+            <!-- Quest Detail Tab -->
+            <TabItem Header="Quest">
+                <StackPanel Margin="24" 
+               Visibility="{Binding QuestDetail.HasSelection, 
+               Converter={StaticResource BoolToVis}}">
+                    <TextBlock Text="{Binding QuestDetail.ObjectiveId}" 
+                   Foreground="White" FontSize="20"/>
+                    <TextBlock Text="{Binding QuestDetail.StepId}" 
+                   Foreground="#aaaaaa" FontSize="14" Margin="0 8 0 0"/>
+                    <TextBlock Text="{Binding QuestDetail.Status}" 
+                   Foreground="#c8a96e" FontSize="13" Margin="0 8 0 0"/>
+                </StackPanel>
+            </TabItem>
 
+            <!-- Party Tab -->
+            <TabItem Header="Party">
+                <ListBox ItemsSource="{Binding SaveFile.Party}"
+               Background="Transparent" BorderThickness="0">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="4">
+                                <StackPanel>
+                                    <TextBlock Text="{Binding DisplayName}" Foreground="White"/>
+                                    <TextBlock Text="{Binding Race}" Foreground="#aaaaaa" FontSize="11"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </TabItem>
         </TabControl>
 
+        <!-- Quest list B-->
+        <Grid Grid.Row="1" Visibility="{Binding IsDiffMode, Converter={StaticResource BoolToVis}}" Grid.Column="3" Background="#1e1e1e">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="40"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <TextBox Grid.Row="0" Margin="8" 
+                    Text="{Binding QuestList.SearchText, UpdateSourceTrigger=PropertyChanged}"
+                    Background="#2a2a2a" Foreground="White"
+                    BorderBrush="#444"/>
+            <ListBox Grid.Row="1" 
+                    ItemsSource="{Binding QuestList.QuestsView}"
+                    SelectedItem="{Binding QuestList.SelectedQuest}"
+                    Background="Transparent" BorderThickness="0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Border Padding="4">
+                            <StackPanel>
+                                <TextBlock Text="{Binding DisplayName}" Foreground="White"/>
+                                <TextBlock Text="{Binding Status}" Foreground="#aaaaaa" FontSize="11"/>
+                            </StackPanel>
+                        </Border>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+        </Grid>
+        <!--Diff view-->
+        <!--<Grid Grid.Row="1" Visibility="{Binding IsDiffMode, Converter={StaticResource BoolToVis}}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+
+            <Grid Grid.Column="0" Background="#1e1e1e">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="40"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <TextBlock Grid.Row="0" Text="{Binding Diff.SaveAName}"
+                           Foreground="White" Margin="8" FontWeight="Bold"/>
+                <Button Grid.Row="1" Content="Load Save A" Margin="8"
+                        Command="{Binding Diff.LoadSaveACommand}"/>
+                <ListBox Grid.Row="2" ItemsSource="{Binding Diff.SaveAQuests}"
+                         Background="Transparent" BorderThickness="0">
+                    <ListBox.ItemTemplate>
+                        <DataTemplate>
+                            <Border Padding="4">
+                                <StackPanel Background="{Binding DiffColor}">
+                                    <TextBlock Text="{Binding DisplayName}" Foreground="White"/>
+                                    <TextBlock Text="{Binding Status}" Foreground="#aaaaaa" FontSize="11"/>
+                                </StackPanel>
+                            </Border>
+                        </DataTemplate>
+                    </ListBox.ItemTemplate>
+                </ListBox>
+            </Grid>
+        </Grid>
+        -->
         <!-- Status bar -->
         <Border Grid.Row="2" Grid.ColumnSpan="2" Background="#111111" Padding="8 0">
             <TextBlock Text="{Binding StatusText}" Foreground="#888888" VerticalAlignment="Center"/>
