@@ -9,6 +9,8 @@ using LSLib.LS;
 using System.ComponentModel;
 using System.Windows.Data;
 using BG3SaveInspector.Services;
+using System.Windows.Input;
+using BG3SaveInspector.Commands;
 
 namespace BG3SaveInspector.ViewModels
 {
@@ -19,12 +21,14 @@ namespace BG3SaveInspector.ViewModels
         private QuestItemViewModel _selectedQuest;
         private string _searchText;
         public ICollectionView QuestsView { get; }
+        public ICommand ClearSearchCommand { get; }
         public int QuestCount => _quests.Count;
         
         public QuestListViewModel()
         {
             QuestsView = CollectionViewSource.GetDefaultView(_quests);
             QuestsView.Filter = FilterQuest;
+            ClearSearchCommand = new RelayCommand(() => SearchText = string.Empty);
         }
 
         private bool FilterQuest(object obj)

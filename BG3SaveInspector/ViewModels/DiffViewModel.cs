@@ -29,6 +29,8 @@ namespace BG3SaveInspector.ViewModels
         public string SaveAName { get => _saveAName; set { _saveAName = value;  OnPropertyChanged(); } }
         public string SaveBName { get => _saveBName; set { _saveBName = value; OnPropertyChanged(); } }
         public string DiffSummary { get => _diffSummary; set { _diffSummary = value; OnPropertyChanged(); } }
+        public ICommand ClearSearchACommand { get; }
+        public ICommand ClearSearchBCommand { get; }
         public string SearchTextA
         {
             get => _searchTextA;
@@ -68,6 +70,9 @@ namespace BG3SaveInspector.ViewModels
 
             SaveAQuestsView.Filter = obj => FilterQuest(obj, SearchTextA);
             SaveBQuestsView.Filter = obj => FilterQuest(obj, SearchTextB);
+
+            ClearSearchACommand = new RelayCommand(() => SearchTextA = string.Empty);
+            ClearSearchBCommand = new RelayCommand(() => SearchTextB = string.Empty);
             
         }
 
