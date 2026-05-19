@@ -1,16 +1,17 @@
 # BG3 Save Inspector
 A Windows desktop tool for inspecting Baldur's Gate 3 save files without launching the game. Browse quest states, story flags, and playthrough progress from your '.lsv' save files.
 
-![quest flag view](res/bg3saveinspector.png)
-![party view BG3](res/bg3saveinspector1.png)
-
-## Feature
+## Features
 - Load any BG3 save file (.lsv)
 - Browse quest log with objective and stepID
 - Search and filter quests
 - Select a quest to view detailed state
 - View save metadata - character name, class, difficulty, thumbnail
 - Browse active party composition
+
+![quest flag view](res/bg3saveinspector.png)
+![party view BG3](res/bg3saveinspector1.png)
+![diff tool](res/bg3saveinspector2.png)
 
 ## Requirements
 - Win 10/11
