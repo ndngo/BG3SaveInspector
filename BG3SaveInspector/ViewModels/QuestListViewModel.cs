@@ -29,6 +29,10 @@ namespace BG3SaveInspector.ViewModels
             QuestsView = CollectionViewSource.GetDefaultView(_quests);
             QuestsView.Filter = FilterQuest;
             ClearSearchCommand = new RelayCommand(() => SearchText = string.Empty);
+            QuestsView.SortDescriptions.Add(
+                new SortDescription(
+                    nameof(QuestItemViewModel.ObjectiveId),
+                    ListSortDirection.Ascending));
         }
 
         private bool FilterQuest(object obj)

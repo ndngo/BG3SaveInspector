@@ -72,7 +72,8 @@
                             <Border Padding="4">
                                 <StackPanel>
                                     <TextBlock Text="{Binding DisplayName}" Foreground="White"/>
-                                    <TextBlock Text="{Binding Status}" Foreground="#aaaaaa" FontSize="11"/>
+                                    <TextBlock Text="{Binding Status}" Foreground="White" FontSize="11"/>
+                                    <TextBlock Text="{Binding StepId}" Foreground="White" FontSize="10"/>
                                 </StackPanel>
                             </Border>
                         </DataTemplate>
@@ -154,7 +155,8 @@
                             <Border Padding="4" Background="{Binding DiffColour}">
                                 <StackPanel>
                                     <TextBlock Text="{Binding DisplayName}" Foreground="White"/>
-                                    <TextBlock Text="{Binding Status}" Foreground="#aaaaaa" FontSize="11"/>
+                                    <TextBlock Text="{Binding Status}" Foreground="White" FontSize="11"/>
+                                    <TextBlock Text="{Binding StepId}" Foreground="White" FontSize="10"/>
                                 </StackPanel>
                             </Border>
                         </DataTemplate>
@@ -197,7 +199,8 @@
                             <Border Padding="4" Background="{Binding DiffColour}">
                                 <StackPanel>
                                     <TextBlock Text="{Binding DisplayName}" Foreground="White"/>
-                                    <TextBlock Text="{Binding Status}" Foreground="#aaaaaa" FontSize="11"/>
+                                    <TextBlock Text="{Binding Status}" Foreground="White" FontSize="11"/>
+                                    <TextBlock Text="{Binding StepId}" Foreground="White" FontSize="10"/>
                                 </StackPanel>
                             </Border>
                         </DataTemplate>

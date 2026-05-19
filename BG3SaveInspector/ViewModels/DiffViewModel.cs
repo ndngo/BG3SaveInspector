@@ -71,6 +71,20 @@ namespace BG3SaveInspector.ViewModels
             SaveAQuestsView.Filter = obj => FilterQuest(obj, SearchTextA);
             SaveBQuestsView.Filter = obj => FilterQuest(obj, SearchTextB);
 
+            SaveAQuestsView.SortDescriptions.Add(
+                new SortDescription(nameof(QuestItemViewModel.DiffSortOrder),
+                ListSortDirection.Ascending));
+            SaveAQuestsView.SortDescriptions.Add(
+                new SortDescription(nameof(QuestItemViewModel.ObjectiveId),
+                ListSortDirection.Ascending));
+
+            SaveBQuestsView.SortDescriptions.Add(
+                new SortDescription(nameof(QuestItemViewModel.DiffSortOrder),
+                ListSortDirection.Ascending));
+            SaveBQuestsView.SortDescriptions.Add(
+                new SortDescription(nameof(QuestItemViewModel.ObjectiveId),
+                ListSortDirection.Ascending));
+
             ClearSearchACommand = new RelayCommand(() => SearchTextA = string.Empty);
             ClearSearchBCommand = new RelayCommand(() => SearchTextB = string.Empty);
             
@@ -163,7 +177,9 @@ namespace BG3SaveInspector.ViewModels
             var addedCount = added.Count;
             var removedCount = removed.Count;
             var modifiedCount = inBoth.Count;
-            DiffSummary = $"{addedCount} added · {removedCount} removed · {modifiedCount} · modified";
+            SaveAQuestsView.Refresh();
+            SaveBQuestsView.Refresh();
+            DiffSummary = $"{addedCount} added · {removedCount} removed · {modifiedCount} modified";
         }
     }
 }
