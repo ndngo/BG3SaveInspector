@@ -13,8 +13,16 @@ A Windows desktop tool for inspecting Baldur's Gate 3 save files without launchi
 - View save metadata - character name, class, difficulty, thumbnail
 - Browse active party composition
 
+### Save Diff
+Compare two saves side by side with colour-coded changes
 ![diff tool](res/bg3saveinspector2.png)
+
+## Quest log
+Browse and filter quest state
 ![quest flag view](res/bg3saveinspector.png)
+
+## Party composition
+View the active party members and character metadata
 ![party view BG3](res/bg3saveinspector1.png)
 
 
