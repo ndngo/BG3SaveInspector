@@ -22,6 +22,8 @@ namespace BG3SaveInspector.ViewModels
     public class SaveFileViewModel : BaseViewModel
     {
         private string _saveName;
+        private string _savetime;
+
         private string _playtime;
         private BitmapImage _thumbnail;
         private string _leaderName;
@@ -40,7 +42,8 @@ namespace BG3SaveInspector.ViewModels
         }
 
         public string SaveName { get => _saveName; set { _saveName = value; OnPropertyChanged(); } }
-        public string Playtime { get => _playtime;set { _playtime = value; OnPropertyChanged(); } }
+        public string Savetime { get => _savetime; set { _savetime = value; OnPropertyChanged(); } }
+        public string Playtime { get => _playtime; set { _playtime = value; OnPropertyChanged(); } }
         public BitmapImage Thumbnail { get => _thumbnail; set { _thumbnail = value; OnPropertyChanged(); } }
         public string LeaderName { get => _leaderName; set { _leaderName = value; OnPropertyChanged(); } }
         public string LeaderClass { get => _leaderClass; set { _leaderClass = value; OnPropertyChanged(); } }
@@ -158,6 +161,20 @@ namespace BG3SaveInspector.ViewModels
                 Difficulty = (isHonourMode) ? "Honour Mode" : difficulty.Replace("Difficulty", "");
                 Location = root.GetProperty("Current Level").GetString();
                 SaveName = root.GetProperty("Save Name").GetString();
+
+                if (long.TryParse( metaResource.Regions["MetaData"].Children["MetaData"][0].Attributes["SaveTime"].Value.ToString(), out long st))
+                {
+                    Savetime = DateTimeOffset.FromUnixTimeSeconds(st).LocalDateTime.ToString("yyyy-MM-dd hh:mm tt");
+                }
+
+                if (long.TryParse(metaResource.Regions["MetaData"].Children["MetaData"][0].Attributes["TimeStamp"].Value.ToString(), out long pt))
+                {
+                    // subtract some magic offset number
+                    var ts = TimeSpan.FromSeconds(pt-5776);
+                    Playtime = ts.TotalHours >= 1
+                        ? $"{(int)ts.TotalHours:D2}:{ts.Minutes:D2}:{ts.Seconds:D2}"
+                        : $"{ts.Minutes:D2}:{ts.Seconds:D2}";
+                }
 
                 var thumbnailFile = package.Files.FirstOrDefault(f => f.Name.EndsWith(".webp", StringComparison.OrdinalIgnoreCase));
                 if (thumbnailFile != null)

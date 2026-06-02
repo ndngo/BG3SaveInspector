@@ -7,9 +7,9 @@
 
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="150"/>
+            <RowDefinition Height="180"/>
             <RowDefinition Height="*"/>
-            <RowDefinition Height="28"/>
+            <RowDefinition Height="25"/>
         </Grid.RowDefinitions>
         <!-- HEADER -->
         <Border Grid.Row="0" Background="#111111" Padding="16">
@@ -20,6 +20,8 @@
                     <TextBlock Text="{Binding SaveFile.LeaderName}" Foreground="White" FontSize="14"/>
                     <TextBlock Text="{Binding SaveFile.Location}" Foreground="#aaaaaa" FontSize="13"/>
                     <TextBlock Text="{Binding SaveFile.Difficulty}" Foreground="#c8a96e" FontSize="12"/>
+                    <TextBlock Text="{Binding SaveFile.Savetime}" Foreground="#aaaaaa" FontSize="12"/>
+                    <TextBlock Text="{Binding SaveFile.Playtime}" Foreground="#aaaaaa" FontSize="12"/>
                 </StackPanel>
             </StackPanel>
         </Border>

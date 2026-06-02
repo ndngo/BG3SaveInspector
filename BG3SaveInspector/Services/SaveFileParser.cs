@@ -25,6 +25,16 @@ namespace BG3SaveInspector.Services
 
         public static List<QuestItemViewModel> ParseQuestsFromResource(Resource resource)
         {
+            var questObj = resource?.Regions["Journal"]
+                ?.Children["Quests"][0]
+                ?.Children["Quests"][0]
+                ?.Children;
+
+            if (!questObj.ContainsKey("QuestsProgress"))
+            {
+                return new List<QuestItemViewModel>();
+            }
+
             var progressNodes = resource?.Regions["Journal"]
                 ?.Children["Quests"][0]
                 ?.Children["Quests"][0]
